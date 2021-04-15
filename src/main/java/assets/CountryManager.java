@@ -10,4 +10,8 @@ public class CountryManager {
     public Object getId() {
         return null;
     }
+
+    public int getMultiplier(UserManager.UserInfo userInfo) {
+        return 0;
+    }
 }

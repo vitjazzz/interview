@@ -7,7 +7,7 @@ public class DBPricingLogger {
         return instance;
     }
 
-    public void log(int finalPrice) {
+    public void log(long finalPrice) {
 
     }
 }

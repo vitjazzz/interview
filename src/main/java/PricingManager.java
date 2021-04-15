@@ -35,7 +35,7 @@ public class PricingManager {
 
         int y = (userManager.getUserInfo().getDetailedInfo().getBirthday().getTime() == new Date().getTime()) == true ? 2 : 1;
 
-        int finalPrice = DBManager.getInstance().getDefaultPrice().getValue() / (x * y * getMultiplierForCountry(userManager.getUserInfo()) * 100);
+        long finalPrice = DBManager.getInstance().getDefaultPrice().longValue() / (x * y * getMultiplierForCountry(userManager.getUserInfo()) * 100);
 
         if (prodPricingLogger != null) {
             prodPricingLogger.log(finalPrice);

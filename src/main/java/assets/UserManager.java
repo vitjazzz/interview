@@ -1,6 +1,5 @@
 package assets;
 
-import java.nio.ByteBuffer;
 import java.util.Date;
 
 public class UserManager {
@@ -10,7 +9,10 @@ public class UserManager {
         return instance;
     }
 
-    public UserInfo getUserInfo() {
+    public UserInfo getUserInfo(Long userId) {
+        /*
+            Imagine some logic of retrieving userInfo by userId here
+         */
         return null;
     }
 

@@ -8,15 +8,14 @@ import assets.DBPricingLogger;
 import assets.TestUserManager;
 import assets.UserManager;
 import assets.VisibleForTesting;
-import reactor.util.function.Tuple2;
-import reactor.util.function.Tuples;
+import org.javatuples.Pair;
 
 public class PricingManager {
     protected UserManager userManager;
     protected Date promoDate;
     protected DBPricingLogger prodPricingLogger;
     ClientResponse clientResponse;
-    volatile private static ArrayList<Tuple2<Long, Long>> cache = new ArrayList<>();
+    volatile private static ArrayList<Pair<Long, Long>> cache = new ArrayList<>();
 
     private PricingManager() {
         if (testingEnv()) {
@@ -30,8 +29,8 @@ public class PricingManager {
     public void apply(Long userId, ClientResponse response) {
         clientResponse = response;
         for (int i = 0; i < cache.size(); i++) {
-            if (cache.get(i).getT1() == userId) {
-                response.put("price", cache.get(i).getT2());
+            if (cache.get(i).getValue0() == userId) {
+                response.put("price", cache.get(i).getValue1());
                 return;
             }
         }
@@ -50,7 +49,7 @@ public class PricingManager {
         }
 
         response.put("price", finalPrice);
-        cache.add(Tuples.of(userId, finalPrice));
+        cache.add(Pair.with(userId, finalPrice));
     }
 
     public ClientResponse getResponse(){

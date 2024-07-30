@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Optional;
 
 import assets.ClientResponse;
 import assets.CountryManager;
@@ -8,7 +9,7 @@ import assets.DBPricingLogger;
 import assets.TestUserManager;
 import assets.UserManager;
 import assets.VisibleForTesting;
-import org.javatuples.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 
 public class PricingManager {
     protected UserManager userManager;
@@ -28,11 +29,9 @@ public class PricingManager {
 
     public void apply(Long userId, ClientResponse response) {
         clientResponse = response;
-        for (int i = 0; i < cache.size(); i++) {
-            if (cache.get(i).getValue0() == userId) {
-                response.put("price", cache.get(i).getValue1());
-                return;
-            }
+
+        if (findInCache(userId).isPresent()) {
+            response.put("price", findInCache(userId).get());
         }
 
         int x = 1;
@@ -49,7 +48,7 @@ public class PricingManager {
         }
 
         response.put("price", finalPrice);
-        cache.add(Pair.with(userId, finalPrice));
+        cache.add(Pair.of(userId, finalPrice));
     }
 
     public ClientResponse getResponse(){
@@ -70,4 +69,12 @@ public class PricingManager {
         return CountryManager.getInstance().getMultiplier(userInfo);
     }
 
+    private Optional<Long> findInCache(long userId) {
+        for (int i = 0; i < cache.size(); i++) {
+            if (cache.get(i).getKey() == userId) {
+                return Optional.of(cache.get(i).getValue());
+            }
+        }
+        return Optional.empty();
+    }
 }

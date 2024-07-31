@@ -32,6 +32,7 @@ public class PricingManager {
 
         if (findInCache(userId).isPresent()) {
             response.put("price", findInCache(userId).get());
+            return;
         }
 
         int x = 1;
